@@ -29,10 +29,9 @@ function showWeather(evt) {
     let url = "/weather.json";
     let formData = {"zipcode": $("#zipcode-field").val()};
     $.get(url, formData, function(results){
-    	console.log(results);
-    	let forecast = Object.values(results)[0];
-    	console.log(forecast);
-    	$('#weather-info').html(forecast);});
+    	let forecast = results.forecast;
+    	$('#weather-info').html(forecast);
+    });
 
 
     // TODO: request weather with that URL and show the forecast in #weather-info
@@ -49,6 +48,27 @@ function orderMelons(evt) {
     evt.preventDefault();
 
     // TODO: show the result message after your form
+    let url = "/order-melons.json";
+
+    //jquery($) html(id) for values entered
+    let formData = {'melon_type': $("#melon-type-field").val(), 'qty': $("#qty-field").val()};
+
+    $.post(url, formData, function (results){
+    	let code = results.code;
+    	let message = results.msg;
+    	let string = code + ' ' + message;
+    	
+    	// put message in html
+    	$('#order-status').html(string);
+
+    	// adds order-error css class if code is ERROR
+    	if (code === "ERROR") {
+    		$('#order-status').addClass('order-error');
+    	} else {
+    		$('#order-status').removeClass('order-error');
+    	}
+    });
+
     // TODO: if the result code is ERROR, make it show up in red (see our CSS!)
 }
 
